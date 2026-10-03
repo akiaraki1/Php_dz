@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0px;
+        padding: 0px;
+        box-sizing: border-box;
+      }
+
+      form {
+        background-color: darkslateblue;
+        height: 100px;
+        width: 700px;
+        margin: 100px auto 0px;
+        border-radius: 30px;
+      }
+
+      input#oper_value,
+      #btn {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        margin: 40px 0px 0px;
+      }
+
+      input#equals {
+        cursor: pointer;
+      }
+
+      form input {
+        margin: 30px 10px 0px;
+        border-radius: 5px;
+        border: none;
+        height: 30px;
+      }
+
+      input#result {
+        width: 210px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <form>
+      <input
+        type="number"
+        name="num1"
+        id="num1"
+        required
+        placeholder="Введите первое число"
+        value=""
+      />
+      <input
+        type="text"
+        name="oper_value"
+        id="oper_value"
+        required
+        placeholder=" +"
+        required
+      />
+      <input
+        type="number"
+        name="num2"
+        id="num2"
+        required
+        placeholder="Введите второе число"
+        value=""
+      />
+      <button type="button" id="btn">=</button>
+      <input
+        type="text"
+        id="result"
+        readonly
+        placeholder="Результат"
+        value=""
+      />
+    </form>
+  </body>
+<script>
+  const num1Field = document.getElementById("num1");
+  const num2Field = document.getElementById("num2");
+  const operField = document.getElementById("oper_value");
+  const resultField = document.getElementById("result");
+  const btn = document.getElementById("btn");
+
+  const operators = ["+", "-", "*", "/"];
+
+  btn.addEventListener("click", function () {
+    // 1. Читаем строки из полей
+    const rawA = num1Field.value;
+    const rawB = num2Field.value;
+    const op = operField.value.trim();
+
+    // 2. Проверка на пустоту (до приведения к числу!)
+    if (rawA === "" || rawB === "") {
+      resultField.value = "Введите числа";
+      return;
+    }
+
+    // 3. Приводим к числам
+    const a = +rawA;
+    const b = +rawB;
+
+    // 4. Проверка на NaN (на случай странного ввода)
+    if (Number.isNaN(a) || Number.isNaN(b)) {
+      resultField.value = "Не число";
+      return;
+    }
+
+    // 5. Проверка оператора
+    if (!operators.includes(op)) {
+      resultField.value = "Неверный оператор";
+      return;
+    }
+
+    // 6. Считаем
+    let res;
+
+    switch (op) {
+      case "+":
+        res = a + b;
+        break;
+      case "-":
+        res = a - b;
+        break;
+      case "*":
+        res = a * b;
+        break;
+      case "/":
+        if (b === 0) {
+          resultField.value = "На ноль делить нельзя";
+          return;
+        }
+        res = a / b;
+        break;
+    }
+
+    // 7. Выводим результат
+    resultField.value = res;
+  });
+</script>
+</html>
